@@ -12,9 +12,9 @@ const Footer = ({
           <p className="text-sm text-muted-foreground">
             {completedTasksCount > 0 && (
               <>
-                Tuyệt vời! Bạn đã hoàn thành {completedTasksCount} việc.
+                Tuyệt vời! Bạn đã hoàn thành {completedTasksCount} việc
                 {pendingTasksCount > 0 &&
-                  ` ,còn ${pendingTasksCount} việc đang chờ `}
+                  `, còn ${pendingTasksCount} việc đang chờ `}
                 {inProcessingTasksCount > 0 &&
                   `và ${inProcessingTasksCount} việc đang làm nữa thôi. `}
                 Cố lên!

@@ -53,7 +53,7 @@ const StatsAndFilters = ({
             key={type}
             variant={filter === type ? "gradient" : "ghost"}
             size="sm"
-            className="capitalize"
+            className="capitalize cursor-pointer"
             onClick={() => setFilter(type)}
           >
             <Filter className="size-4" />

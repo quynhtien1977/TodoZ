@@ -46,7 +46,7 @@ const AddTask = ({ handleNewTaskAdded }) => {
         <Button
           variant="gradient"
           size="xl"
-          className="px-6"
+          className="px-6 cursor-pointer"
           onClick={addTask}
           disabled={!newTaskTitle.trim()}
         >

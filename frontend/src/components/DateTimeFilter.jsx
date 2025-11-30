@@ -28,7 +28,7 @@ const DateTimeFilter = ({ dateQuery, setDateQuery }) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=""
+          className="cursor-pointer"
         >
           {dateQuery
             ? options.find((option) => option.value === dateQuery)?.label
@@ -48,6 +48,7 @@ const DateTimeFilter = ({ dateQuery, setDateQuery }) => {
                     setDateQuery(currentValue);
                     setOpen(false);
                   }}
+                  className="cursor-pointer"
                 >
                   {option.label}
                   <Check

@@ -51,7 +51,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           updateAt: new Date().toISOString(),
           completedAt: null,
         });
-        toast.info(`Nhiệm vụ ${task.title} đã bắt đầu!`);
+        toast.success(`Nhiệm vụ ${task.title} đã bắt đầu!`);
       } else if (task.status === "in-progress") {
         const newStatus = "completed";
         await api.put(`/tasks/${task._id}`, {
@@ -62,20 +62,18 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
         toast.success(`Nhiệm vụ ${task.title} đã hoàn thành!`);
       } else if (task.status === "completed") {
         const newStatus = "cancelled";
-        await api.put(`/tasks/${task._id}`, {
-          status: newStatus,
+        await api.put(`/tasks/${task._id}`, { status: newStatus ,
           updateAt: new Date().toISOString(),
           completedAt: null,
         });
-        toast.error(`Nhiệm vụ ${task.title} đã bị hủy!`);
+        toast.success(`Nhiệm vụ ${task.title} đã bị hủy!`);
       } else {
         const newStatus = "pending";
-        await api.put(`/tasks/${task._id}`, {
-          status: newStatus,
+        await api.put(`/tasks/${task._id}`, { status: newStatus,
           updateAt: new Date().toISOString(),
           completedAt: null,
-        });
-        toast.warning(`Nhiệm vụ ${task.title} đã khôi phục lại!`);
+         });
+        toast.success(`Nhiệm vụ ${task.title} đã khôi phục lại!`);
       }
       handleTaskChanged();
     } catch (error) {
@@ -108,7 +106,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           variant="ghost"
           size="icon"
           className={cn(
-            "flex-shrink-0 size-8 rounded-full transition-all duration-200",
+            "shrink-0 size-8 rounded-full transition-all duration-200 cursor-pointer",
             task.status === "completed"
               ? "text-success hover:text-success/80"
               : task.status === "in-progress"
@@ -183,7 +181,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="flex-shrink-0 transition-colors size-8 text-muted-foreground hover:text-info"
+            className="shrink-0 transition-colors size-8 text-muted-foreground hover:text-info cursor-pointer"
             onClick={() => {
               setIsEditting(true);
               setUpdateTaskTitle(task.title || "");
@@ -196,7 +194,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           <Button
             variant="ghost"
             size="icon"
-            className="flex-shrink-0 transition-colors size-8 text-muted-foreground hover:text-destructive"
+            className="shrink-0 transition-colors size-8 text-muted-foreground hover:text-destructive cursor-pointer"
             onClick={() => deleteTask(task._id)}
           >
             <Trash2 className="size-4" />
