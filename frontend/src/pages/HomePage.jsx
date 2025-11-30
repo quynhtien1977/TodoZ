@@ -1,5 +1,6 @@
 import AddTask from "@/components/AddTask";
 import DateTimeFilter from "@/components/DateTimeFilter";
+import PriorityFilter from "@/components/PriorityFilter";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import StatsAndFilters from "@/components/StatsAndFilters";
@@ -16,17 +17,13 @@ const HomePage = () => {
   const [completedTasks, setCompletedTasks] = useState(0);
   const [inProcessTasks, setInProcessTasks] = useState(0);
   const [cancelledTasks, setCancelledTasks] = useState(0);
+  const [highPriority, setHighPriority] = useState(0);
+  const [mediumPriority, setMediumPriority] = useState(0);
+  const [lowPriority, setLowPriority] = useState(0);
   const [filter, setFilter] = useState("all");
+  const [priorityFilter, setPriorityFilter] = useState("all");
   const [dateQuery, setDateQuery] = useState('today');
   const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    fetchTasks();
-  }, [dateQuery]);
-
-  useEffect(() => {
-    setPage(1);
-  },[filter, dateQuery]);
 
   // logic để lấy dữ liệu từ backend
   const fetchTasks = async () => {
@@ -37,11 +34,22 @@ const HomePage = () => {
       setCompletedTasks(res.data.completedTasksCount);
       setInProcessTasks(res.data.inProcessTasksCount);
       setCancelledTasks(res.data.cancelledTasksCount);
+      setHighPriority(res.data.highPriorityCount);
+      setMediumPriority(res.data.mediumPriorityCount);
+      setLowPriority(res.data.lowPriorityCount);
       console.log("fetch: ", res.data);
     } catch (error) {
       toast.error("Không thể tải danh sách công việc.");
     }
   };
+
+  useEffect(() => {
+    fetchTasks();
+  }, [dateQuery]);
+
+  useEffect(() => {
+    setPage(1);
+  },[filter, dateQuery, priorityFilter]);
 
   const handleTaskChange = () => {
     fetchTasks();
@@ -63,20 +71,34 @@ const HomePage = () => {
     setPage(newPage);
   };
 
-  //Biến đổi danh sách công việc dựa trên bộ lọc
+  //Biến đổi danh sách công việc dựa trên bộ lọc status và priority
   const filteredTasks = taskBuffer.filter((task) => {
+    // Filter theo status
+    let statusMatch = true;
     switch (filter) {
       case "pending":
-        return task.status === "pending";
+        statusMatch = task.status === "pending";
+        break;
       case "completed":
-        return task.status === "completed";
+        statusMatch = task.status === "completed";
+        break;
       case "inProgress":
-        return task.status === "in-progress";
+        statusMatch = task.status === "in-progress";
+        break;
       case "cancelled":
-        return task.status === "cancelled";
+        statusMatch = task.status === "cancelled";
+        break;
       default:
-        return true;
+        statusMatch = true;
     }
+
+    // Filter theo priority
+    let priorityMatch = true;
+    if (priorityFilter !== "all") {
+      priorityMatch = task.priority === priorityFilter;
+    }
+
+    return statusMatch && priorityMatch;
   });
 
   const visibleTasks = filteredTasks.slice(
@@ -84,7 +106,7 @@ const HomePage = () => {
     page * visibleTaskLimit
   );
 
-  if (visibleTasks.length === 0) {
+  if (visibleTasks.length === 0 && page > 1) {
     handlePrev();
   }
 
@@ -118,6 +140,9 @@ const HomePage = () => {
             completedTasksCount={completedTasks}
             inProcessTasksCount={inProcessTasks}
             cancelledTasksCount={cancelledTasks}
+            highPriorityCount={highPriority}
+            mediumPriorityCount={mediumPriority}
+            lowPriorityCount={lowPriority}
           />
 
           {/* Danh sách công việc */}
@@ -128,7 +153,7 @@ const HomePage = () => {
           />
 
           {/* Phân trang và bộ lọc theo thời gian */}
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <TaskListPagination 
               handleNext={handleNext}
               handlePrev={handlePrev}
@@ -136,10 +161,16 @@ const HomePage = () => {
               page={page}
               totalPages={totalPages}
             />
-            <DateTimeFilter 
-              dateQuery={dateQuery} 
-              setDateQuery={setDateQuery}
-            />
+            <div className="flex gap-2">
+              <PriorityFilter
+                priorityQuery={priorityFilter}
+                setPriorityQuery={setPriorityFilter}
+              />
+              <DateTimeFilter 
+                dateQuery={dateQuery} 
+                setDateQuery={setDateQuery}
+              />
+            </div>
           </div>
 
           {/* Chân trang */}

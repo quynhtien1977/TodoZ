@@ -54,6 +54,18 @@ export const getAllTasks = async (req, res) => {
             { $match: { status: "cancelled" } },
             { $count: "count" },
           ],
+          highPriorityCount: [
+            { $match: { priority: "high" } },
+            { $count: "count" },
+          ],
+          mediumPriorityCount: [
+            { $match: { priority: "medium" } },
+            { $count: "count" },
+          ],
+          lowPriorityCount: [
+            { $match: { priority: "low" } },
+            { $count: "count" },
+          ],
         },
       },
     ]);
@@ -63,6 +75,9 @@ export const getAllTasks = async (req, res) => {
     const completedTasksCount = result[0].completedTasksCount[0]?.count || 0;
     const inProcessTasksCount = result[0].inProcessTasksCount[0]?.count || 0;
     const cancelledTasksCount = result[0].cancelledTasksCount[0]?.count || 0;
+    const highPriorityCount = result[0].highPriorityCount[0]?.count || 0;
+    const mediumPriorityCount = result[0].mediumPriorityCount[0]?.count || 0;
+    const lowPriorityCount = result[0].lowPriorityCount[0]?.count || 0;
 
     res
       .status(200)
@@ -72,6 +87,9 @@ export const getAllTasks = async (req, res) => {
         completedTasksCount,
         inProcessTasksCount,
         cancelledTasksCount,
+        highPriorityCount,
+        mediumPriorityCount,
+        lowPriorityCount,
       });
   } catch (error) {
     console.error("Lỗi khi lấy danh sách nhiệm vụ:", error);

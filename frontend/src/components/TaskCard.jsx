@@ -12,8 +12,16 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "./ui/input";
+import { Badge } from "./ui/badge";
 import { toast } from "sonner";
 import api from "@/lib/axios";
+import { PriorityType } from "@/lib/data";
+
+const priorityConfig = {
+  high: { label: PriorityType.high, class: "bg-destructive/10 text-destructive border-destructive/20" },
+  medium: { label: PriorityType.medium, class: "bg-info/10 text-accent-foreground border-info/20" },
+  low: { label: PriorityType.low, class: "bg-success/10 text-success border-success/20" },
+};
 
 const TaskCard = ({ task, index, handleTaskChanged }) => {
   const [isEditting, setIsEditting] = useState(false);
@@ -106,7 +114,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           variant="ghost"
           size="icon"
           className={cn(
-            "shrink-0 size-8 rounded-full transition-all duration-200 cursor-pointer",
+            "shrink-0 size-8 rounded-full transition-all duration-200 cursor-pointer mt-1",
             task.status === "completed"
               ? "text-success hover:text-success/80"
               : task.status === "in-progress"
@@ -130,34 +138,58 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
 
         {/* Hiển thị hoặc chỉnh sửa tiêu đề */}
         <div className="flex-1 min-w-0">
-          {isEditting ? (
-            <Input
-              placeholder="Cần phải làm gì?"
-              className="flex-1 h-12 text-base border-border/50 focus:border-primary/50 focus:ring-primary/20"
-              type="text"
-              value={updateTaskTitle}
-              onChange={(e) => setUpdateTaskTitle(e.target.value)}
-              onKeyPress={handleKeyPress}
-              onBlur={() => {
-                setIsEditting(false);
-                setUpdateTaskTitle(task.title || "");
-              }}
-            />
-          ) : (
-            <p
-              className={cn(
-                "text-base transition-all duration-200",
-                task.status === "completed"
-                  ? "line-through text-muted-foreground"
-                  : task.status === "cancelled"
-                  ? "line-through text-foreground"
-                  : "text-foreground"
-              )}
-            >
-              {task.title}
+          <div className="flex items-center gap-2 flex-wrap">
+            {isEditting ? (
+              <Input
+                placeholder="Cần phải làm gì?"
+                className="flex-1 h-10 text-base border-border/50 focus:border-primary/50 focus:ring-primary/20"
+                type="text"
+                value={updateTaskTitle}
+                onChange={(e) => setUpdateTaskTitle(e.target.value)}
+                onKeyPress={handleKeyPress}
+                onBlur={() => {
+                  setIsEditting(false);
+                  setUpdateTaskTitle(task.title || "");
+                }}
+              />
+            ) : (
+              <>
+                <p
+                  className={cn(
+                    "text-base transition-all duration-200",
+                    task.status === "completed"
+                      ? "line-through text-muted-foreground"
+                      : task.status === "cancelled"
+                      ? "line-through text-foreground"
+                      : "text-foreground"
+                  )}
+                >
+                  {task.title}
+                </p>
+                {/* Priority Badge */}
+                {task.priority && (
+                  <Badge
+                    variant="secondary"
+                    className={cn(
+                      "text-xs px-2 py-0",
+                      priorityConfig[task.priority]?.class
+                    )}
+                  >
+                    {priorityConfig[task.priority]?.label}
+                  </Badge>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Description */}
+          {task.description && !isEditting && (
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+              {task.description}
             </p>
           )}
-          {/*Ngày tạo và ngày hoàn thành*/}
+
+          {/* Ngày tạo và ngày hoàn thành */}
           <div className="flex items-center gap-2 mt-1">
             <Calendar className="size-3 text-muted-foreground" />
             <span className="text-xs text-muted-foreground">
