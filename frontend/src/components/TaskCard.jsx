@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card } from "./ui/card";
 import { Button } from "./ui/button";
 import {
-  CheckCircle,
+  CheckCircle2,
   PlayCircle,
   XCircle,
   Circle,
@@ -118,7 +118,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           onClick={toggleTaskInProgress}
         >
           {task.status === "completed" ? (
-            <CheckCircle className="size-5" />
+            <CheckCircle2 className="size-5" />
           ) : task.status === "in-progress" ? (
             <PlayCircle className="size-5" />
           ) : task.status === "cancelled" ? (
