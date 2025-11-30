@@ -15,7 +15,7 @@ const StatsAndFilters = ({
   return (
     <div className="space-y-4">
       {/* Phần thống kê */}
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:flex lg:gap-3">
+      <div className="grid grid-cols-2 gap-2 mx-auto w-fit sm:grid-cols-4 sm:w-full lg:flex lg:gap-3">
         <Badge
           variant="secondary"
           className="bg-white/50 text-warning border-warning/20 text-center justify-center"
