@@ -21,7 +21,7 @@ const StatsAndFilters = ({
       <div className="grid grid-cols-2 gap-2 mx-auto w-fit sm:grid-cols-4 sm:w-full lg:flex lg:gap-3">
         <Badge
           variant="secondary"
-          className="bg-white/50 text-warning border-warning/20 text-center justify-center"
+          className="bg-white/50 text-amber-500 border-amber-500/20 text-center justify-center"
         >
           <span className="font-semibold">{pendingTasksCount}</span>
           <span className="ml-1">{FilterType.pending}</span>

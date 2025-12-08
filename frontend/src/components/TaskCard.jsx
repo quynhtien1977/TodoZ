@@ -46,7 +46,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           updateAt: new Date().toISOString(),
           completedAt: null,
         });
-        toast.success(`Nhiệm vụ ${task.title} đã bắt đầu!`);
+        toast.info(`Nhiệm vụ ${task.title} đã bắt đầu!`);
       } else if (task.status === "in-progress") {
         const newStatus = "completed";
         await api.put(`/tasks/${task._id}`, {
@@ -62,7 +62,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           updateAt: new Date().toISOString(),
           completedAt: null,
         });
-        toast.success(`Nhiệm vụ ${task.title} đã bị hủy!`);
+        toast.error(`Nhiệm vụ ${task.title} đã bị hủy!`);
       } else {
         const newStatus = "pending";
         await api.put(`/tasks/${task._id}`, {
@@ -70,7 +70,7 @@ const TaskCard = ({ task, index, handleTaskChanged }) => {
           updateAt: new Date().toISOString(),
           completedAt: null,
         });
-        toast.success(`Nhiệm vụ ${task.title} đã khôi phục lại!`);
+        toast.warning(`Nhiệm vụ ${task.title} đã khôi phục lại!`);
       }
       handleTaskChanged();
     } catch (error) {

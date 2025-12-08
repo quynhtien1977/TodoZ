@@ -1,5 +1,6 @@
 import express from "express";
 import taskRoute from "./routes/taskRouters.js";
+import chatRoute from "./routes/chatRoutes.js";
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -20,6 +21,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(cors({ origin: "http://localhost:5173" }));
 }
 app.use("/api/tasks", taskRoute);
+app.use("/api/chat", chatRoute);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

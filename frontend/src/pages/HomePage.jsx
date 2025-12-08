@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import StatsAndFilters from "@/components/StatsAndFilters";
 import TaskList from "@/components/TaskList";
 import TaskListPagination from "@/components/TaskListPagination";
+import AIChatBox from "@/components/AIChatBox";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import api from "@/lib/axios";
@@ -181,6 +182,9 @@ const HomePage = () => {
           />
         </div>
       </div>
+
+      {/* AI Chatbot */}
+      <AIChatBox tasks={taskBuffer} />
     </div>
   );
 };
